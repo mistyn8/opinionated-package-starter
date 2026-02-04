@@ -103,6 +103,18 @@
         "fallback": 5001
       },
       "replaces": "44300"
+    },
+    "packageIdKebab": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "kebabCase",
+      "replaces": "namekebab"
+    },
+    "packageIdNoDotsLower": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "removeDotsLower",
+      "replaces": "NameNoDotsLower"
     }
   },
   "forms": {
@@ -110,6 +122,15 @@
       "identifier": "replace",
       "pattern": "([A-Z][a-z]+)",
       "replacement": "$1 "
+    },
+    "removeDots": {
+      "identifier": "replace",
+      "pattern": "\\.",
+      "replacement": ""
+    },
+    "removeDotsLower": {
+      "identifier": "chain",
+      "steps": [ "removeDots", "lowerCase" ]
     }
   },
   "primaryOutputs": [
