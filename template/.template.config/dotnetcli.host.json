@@ -16,6 +16,10 @@
     "packageTitle": {
       "longName": "package-title",
       "shortName": "pt"
+    },
+    "removeExample": {
+      "longName": "remove-example",
+      "shortName": "re"
     }
   }
 }

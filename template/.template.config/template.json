@@ -71,6 +71,13 @@
       "datatype": "string",
       "replaces": "PACKAGE_TITLE"
     },
+    "removeExample": {
+      "description": "Exclude --include-example flag.",
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "replaces": "EXCLUDE_EXAMPLE_FLAG"
+    },
     "currentYear": {
       "type": "generated",
       "generator": "now",

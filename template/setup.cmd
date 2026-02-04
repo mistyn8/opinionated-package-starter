@@ -12,7 +12,13 @@ dotnet new install Umbraco.Templates --force
 
 :: use the umbraco-extension dotnet template to add the package project
 cd src
-dotnet new umbraco-extension -n "PackageStarter" --site-domain "https://localhost:44300" --include-example
+if /I "EXCLUDE_EXAMPLE_FLAG" == "True" (
+  :: echo "EXCLUDING Examples"
+  dotnet new umbraco-extension -n "PackageStarter" --site-domain "https://localhost:44300"
+) else (
+  :: echo "INCLUDING Examples"
+  dotnet new umbraco-extension -n "PackageStarter" --site-domain "https://localhost:44300" --include-example
+)
 
 :: replace package .csproj with the one from the template so has nuget info
 cd PackageStarter
