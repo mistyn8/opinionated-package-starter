@@ -22,6 +22,13 @@
     <PackageIcon></PackageIcon>
   </PropertyGroup>
 
+  <!-- when packing via IDE have debug store elsewhere and version stamp with date for ease-->
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\dist\</PackageOutputPath>
+    <VersionSuffix>dev</VersionSuffix>
+    <VersionPrefix>$([System.DateTime]::Now.ToString("yyyy.MM.dd.HHmm"))</VersionPrefix>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="*" />
     <PackageReference Include="Umbraco.Cms.Web.Common" Version="*" />
