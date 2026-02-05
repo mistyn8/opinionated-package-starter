@@ -1,11 +1,15 @@
-name: Release Package
+name: Release Package to GitHub Packages
 
-# This action will start when a correctly formatted tag is pushed (e.g. 0.1.0)
+# This action will start when a correctly formatted tag is pushed (e.g. 0.1.0-github)
 
 on:
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-github"
+ 
+permissions:
+  packages: write
+  contents: read
 
 jobs:
   build:
@@ -76,7 +80,8 @@ jobs:
         echo "Packing project: src/${{ env.PACKAGE_NAME }}/${{ env.PACKAGE_NAME }}.csproj"
         dotnet pack src/${{ env.PACKAGE_NAME }}/${{ env.PACKAGE_NAME }}.csproj -c Release /p:Version=${{github.ref_name}}
 
-    - name: Publish to NuGet
+    - name: Publish to Github Nuget
       working-directory: src/${{ env.PACKAGE_NAME }}/bin/Release
-      run: |
-          dotnet nuget push *.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: |      
+        dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"    
+        dotnet nuget push "*.nupkg" --source "github" --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
