@@ -30,12 +30,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="*" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="*" />
-    <PackageReference Include="Umbraco.Cms.Api.Common" Version="*" />
-    <PackageReference Include="Umbraco.Cms.Api.Management" Version="*" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[17.0.0,20.999)" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[17.0.0,20.999)" />
+    <PackageReference Include="Umbraco.Cms.Api.Common" Version="[17.0.0,20.999)" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="[17.0.0,20.999)" />
+    <PackageReference Include="Umbraco.JsonSchema.Extensions" Version="0.3.0" PrivateAssets="all" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <!-- Dont include the client folder as part of packaging nuget build -->
     <Content Remove="Client\**" />
@@ -43,12 +44,69 @@
     <!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
     <None Include="Client\public\umbraco-package.json" Pack="false" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <!-- Dont include the client folder as part of packaging nuget build -->
+    <Content Remove="package.json" />
+    <Content Remove="package-lock.json" />
+
+    <!-- However make the package.json included for npm task runner and visible to the solution -->
+    <None Include="package.json" Pack="false" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="..\..\docs\README_nuget.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <Target Name="Set Vite Version with PackageVersion" BeforeTargets="_GenerateStaticWebAssetsPropsFile" Condition=" '$(Configuration)' == 'Debug' ">
+    <Exec Command="set VITE_VERSION=$(PackageVersion)" WorkingDirectory="$(ProjectDir)\client" />
+  </Target>
+
+  <Target Name="UpdatePackageManifestVersion" AfterTargets="_GenerateStaticWebAssetsPropsFile" BeforeTargets="_GetPackageFiles" Condition=" '$(Configuration)' == 'Debug' ">
+
+    <PropertyGroup>
+      <PackageVersion>$(Version)</PackageVersion>
+      <_SourceAsset>wwwroot\App_Plugins\UmbracoCommunityHtagEditor\umbraco-package.json</_SourceAsset>
+    </PropertyGroup>
+
+    <Message Text="========================================" Importance="high" />
+    <Message Text="📦 Updating umbraco-package.json version to $(PackageVersion)" Importance="high" />
+
+    <!-- Check if version property is set -->
+    <Error Text="$(MSBuildProjectName): Version property '$(PackageVersion)' is not set."
+           Condition="'$(PackageVersion)' == '' Or '$(PackageVersion)' == '0.0.0'" />
+
+    <!-- Update the source file directly -->
+    <JsonPathUpdateValue JsonFile="$(_SourceAsset)"
+                         Path="$.version"
+                         Value="&quot;$(PackageVersion)&quot;" />
+
+    <Message Text="✅ Updated source file to $(PackageVersion)" Importance="high" />
+    <Message Text="========================================" Importance="high" />
+
+  </Target>
+
+  <!-- Restore to 0.0.0 after packing -->
+  <Target Name="RestorePackageManifestVersion"
+          AfterTargets="Pack"
+          Condition=" '$(Configuration)' == 'Debug' ">
+
+    <PropertyGroup>
+      <_SourceAsset>wwwroot\App_Plugins\UmbracoCommunityHtagEditor\umbraco-package.json</_SourceAsset>
+    </PropertyGroup>
+
+    <Message Text="🔄 Restoring umbraco-package.json to 0.0.0" Importance="high" />
+
+    <!-- Restore to placeholder version -->
+    <JsonPathUpdateValue JsonFile="$(_SourceAsset)"
+                         Path="$.version"
+                         Value="&quot;0.0.0&quot;" />
+
+    <Message Text="✅ Source file restored to 0.0.0" Importance="high" />
+
+  </Target>
 
 </Project>
