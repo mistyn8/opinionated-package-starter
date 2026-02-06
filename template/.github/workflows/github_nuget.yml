@@ -21,6 +21,16 @@ jobs:
         
     steps:
 
+    - name: Validate tag is from main branch
+      shell: bash
+      run: |
+          if [ "${{ github.event.base_ref }}" != "refs/heads/main" ]; then
+            echo "❌ Error: Tags can only be created from the main branch"
+            echo "This tag was created from: ${{ github.event.base_ref }}"
+            exit 1
+          fi
+          echo "✅ Tag is from main branch"
+
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -53,6 +63,25 @@ jobs:
           echo "✅ Version matches."
         fi
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        # cache: 'npm' # caching is disabled for now
+
+    - name: Display Node and npm versions
+      run: |
+        node --version
+        npm --version
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Build frontend assets with Vite
+      env:
+        VITE_VERSION: ${{ github.ref_name }}
+      run: npm run build
+
     - name: Display installed SDKs
       run: dotnet --list-sdks
 
@@ -84,4 +113,4 @@ jobs:
       working-directory: src/${{ env.PACKAGE_NAME }}/bin/Release
       run: |      
         dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"    
-        dotnet nuget push "*.nupkg" --source "github" --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push "*.nupkg" --source "github" --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
