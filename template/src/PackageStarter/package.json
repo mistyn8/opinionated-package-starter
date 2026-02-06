@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "cd client\\ && tsc && vite build --watch",
     "build": "cd client\\ && tsc && vite build",
-    "generate-client": "cd client\\ && node scripts/generate-openapi.js https://localhost:44300/umbraco/swagger/NameNoDotsLower/swagger.json"
+    "generate-client": "cd client\\ && node scripts/generate-openapi.js https://localhost:44300/umbraco/swagger/NameNoDotsLower/swagger.json",
+    "install": "cd client\\ && npm install",
+    "update": "cd client\\ && npm update"
   },
   "devDependencies": {},
   "-vs-binding": { "BeforeBuild": [ "build" ] }
