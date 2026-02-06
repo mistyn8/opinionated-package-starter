@@ -354,3 +354,6 @@ MigrationBackup/
 
 # Rider
 src/.idea
+
+# Ignore the App_Plugin/SafeCleanName pacakge files, as they are generated assets
+src/Umbraco.Community.HtagEditor/wwwroot/App_Plugins/SafeCleanName

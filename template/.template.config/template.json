@@ -15,7 +15,7 @@
     "type": "solution"
   },
   "sourceName": "PackageStarter",
-  "defaultName": "PackageStarter1",
+  "defaultName": "PackageStarter",
   "preferNameDirectory": true,
   "sources": [
     {
@@ -113,8 +113,19 @@
     "packageIdNoDotsLower": {
       "type": "derived",
       "valueSource": "name",
-      "valueTransform": "removeDotsLower",
+      "valueTransform": "removePunctuationLower",
       "replaces": "NameNoDotsLower"
+    },
+    "SafeName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "safe_namespace"
+    },
+    "SafeCleanName": {
+      "type": "derived",
+      "valueSource": "SafeName",
+      "valueTransform": "removePunctuation",
+      "replaces": "SafeCleanName"
     }
   },
   "forms": {
@@ -123,14 +134,14 @@
       "pattern": "([A-Z][a-z]+)",
       "replacement": "$1 "
     },
-    "removeDots": {
+    "removePunctuation": {
       "identifier": "replace",
-      "pattern": "\\.",
+      "pattern": "[\\._]",
       "replacement": ""
     },
-    "removeDotsLower": {
+    "removePunctuationLower": {
       "identifier": "chain",
-      "steps": [ "removeDots", "lowerCase" ]
+      "steps": [ "removePunctuation", "lowerCase" ]
     }
   },
   "primaryOutputs": [
@@ -168,9 +179,11 @@
     },
     {
       "description": "All done!",
-      "manualInstructions": [{
-        "text": "Read more about the development workflow for your Umbraco package at https://www.youtube.com/watch?v=6NzPtZokjG4&t=2213s"
-      }],
+      "manualInstructions": [
+        {
+          "text": "Read more about the development workflow for your Umbraco package at https://www.youtube.com/watch?v=6NzPtZokjG4&t=2213s"
+        }
+      ],
       "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
       "continueOnError": true
     }
