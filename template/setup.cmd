@@ -5,7 +5,13 @@
 :: set up git
 git init
 git branch -M main
-git remote add origin https://github.com/GITHUB_USERNAME/GITHUB_REPOSITORY.git
+if /I "USE_GITHUB_SHS" == "True" (
+  :: echo "USING SSH"
+  git remote add origin git@github.com:GITHUB_USERNAME/GITHUB_REPOSITORY.git
+)else (
+  :: echo "USING HTTPS"  
+  git remote add origin https://github.com/GITHUB_USERNAME/GITHUB_REPOSITORY.git
+)
 
 :: ensure latest Umbraco templates used
 dotnet new install Umbraco.Templates --force

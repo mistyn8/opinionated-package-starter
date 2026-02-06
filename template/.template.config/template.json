@@ -15,7 +15,7 @@
     "type": "solution"
   },
   "sourceName": "PackageStarter",
-  "defaultName": "PackageStarter",
+  "defaultName": "PackageStarter1",
   "preferNameDirectory": true,
   "sources": [
     {
@@ -77,6 +77,13 @@
       "datatype": "bool",
       "defaultValue": "false",
       "replaces": "EXCLUDE_EXAMPLE_FLAG"
+    },
+    "githubShs": {
+      "description": "Use GitHub SHS not Https",
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "replaces": "USE_GITHUB_SHS"
     },
     "currentYear": {
       "type": "generated",

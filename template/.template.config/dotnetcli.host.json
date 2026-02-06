@@ -13,6 +13,10 @@
       "longName": "github-repo",
       "shortName": "gr"
     },
+    "githubShs": {
+      "longName": "github-shs",
+      "shortName": "gs"
+    },
     "packageTitle": {
       "longName": "package-title",
       "shortName": "pt"
