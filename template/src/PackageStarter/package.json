@@ -10,6 +10,5 @@
     "install": "cd client\\ && npm install",
     "update": "cd client\\ && npm update"
   },
-  "devDependencies": {},
-  "-vs-binding": { "BeforeBuild": [ "build" ] }
+  "devDependencies": {}
 }
