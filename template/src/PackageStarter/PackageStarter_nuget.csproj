@@ -69,7 +69,7 @@
 
     <PropertyGroup>
       <PackageVersion>$(Version)</PackageVersion>
-      <_SourceAsset>wwwroot\App_Plugins\UmbracoCommunityHtagEditor\umbraco-package.json</_SourceAsset>
+      <_SourceAsset>wwwroot\App_Plugins\PackageStarter\umbraco-package.json</_SourceAsset>
     </PropertyGroup>
 
     <Message Text="========================================" Importance="high" />
@@ -95,7 +95,7 @@
           Condition=" '$(Configuration)' == 'Debug' ">
 
     <PropertyGroup>
-      <_SourceAsset>wwwroot\App_Plugins\UmbracoCommunityHtagEditor\umbraco-package.json</_SourceAsset>
+      <_SourceAsset>wwwroot\App_Plugins\PackageStarter\umbraco-package.json</_SourceAsset>
     </PropertyGroup>
 
     <Message Text="🔄 Restoring umbraco-package.json to 0.0.0" Importance="high" />
